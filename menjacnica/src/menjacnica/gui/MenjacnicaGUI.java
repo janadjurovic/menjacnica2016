@@ -241,4 +241,9 @@ public class MenjacnicaGUI extends JFrame {
 		}
 		return table;
 	}
+	
+	public void osveziTabelu(){
+		MenjacnicaTableModel model = (MenjacnicaTableModel) (table.getModel());
+		model.staviSveValuteUModel(GUIKontroler.vratiSveValute());
+	}
 }

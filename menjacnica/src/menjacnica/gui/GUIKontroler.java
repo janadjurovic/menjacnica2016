@@ -2,6 +2,7 @@ package menjacnica.gui;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -29,6 +30,7 @@ public class GUIKontroler {
 				try {
 					menjacnica = new Menjacnica();
 					glavniProzor = new MenjacnicaGUI();
+					//dodajKursGUI = new DodajKursGUI();
 					glavniProzor.setVisible(true);
 					glavniProzor.setLocationRelativeTo(null);
 				} catch (Exception e) {
@@ -115,5 +117,68 @@ public class GUIKontroler {
 			prozor.setLocationRelativeTo(glavniProzor.getContentPane());
 			prozor.setVisible(true);
 		}
+	}
+	
+	public static void unesiKurs(String naziv, String skraceniNaziv, int sifra, String prodajniKurs, String kupovniKurs,
+			String srednjiKurs) {
+		try {
+			Valuta valuta = new Valuta();
+
+			// Punjenje podataka o valuti
+			valuta.setNaziv(naziv);
+			valuta.setSkraceniNaziv(skraceniNaziv);
+			valuta.setSifra((Integer) (sifra));
+			valuta.setProdajni(Double.parseDouble(prodajniKurs));
+			valuta.setKupovni(Double.parseDouble(kupovniKurs));
+			valuta.setSrednji(Double.parseDouble(srednjiKurs));
+
+			menjacnica.dodajValutu(valuta);
+			glavniProzor.osveziTabelu();
+
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(dodajKursGUI.getContentPane(), e1.getMessage(), "Greska",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public static void osveziGlavniProzor() {
+		glavniProzor.prikaziSveValute();
+	}
+	
+	public static LinkedList<Valuta> vratiSveValute(){
+		return menjacnica.vratiKursnuListu();
+	}
+
+	public static  void obrisiValutu() {
+		try {
+			
+			GUIKontroler.menjacnica.obrisiValutu(valuta);
+
+			glavniProzor.osveziTabelu();
+			obrisiProzor.dispose();
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(glavniProzor, e1.getMessage(), "Greska",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public static Valuta vratiValutu() {
+		return GUIKontroler.valuta;
+	}
+	
+	public static void porukaGreskeBiranjeRedaZaBrisanje() {
+		JOptionPane.showMessageDialog(glavniProzor.getContentPane(), "Izaberite kurs za brisanje!", "Greska",
+				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public static double izvrsiZamenu(boolean isSelected, String iznos) {
+		try {
+			return GUIKontroler.menjacnica.izvrsiTransakciju(valuta, isSelected, Double.parseDouble(iznos));
+
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(izvrsiZamenuGUI.getContentPane(), e1.getMessage(), "Greska",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return Double.MIN_VALUE;
 	}
 }
