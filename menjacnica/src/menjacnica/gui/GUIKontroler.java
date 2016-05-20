@@ -15,7 +15,7 @@ import menjacnica.gui.models.MenjacnicaTableModel;
 public class GUIKontroler {
 	
 	private static MenjacnicaGUI glavniProzor;
-	protected static Menjacnica menjacnica;
+	private static Menjacnica menjacnica;
 	private static DodajKursGUI dodajKursGUI;
 	private static IzvrsiZamenuGUI izvrsiZamenuGUI;
 	private static ObrisiKursGUI obrisiProzor;
@@ -30,6 +30,7 @@ public class GUIKontroler {
 				try {
 					menjacnica = new Menjacnica();
 					glavniProzor = new MenjacnicaGUI();
+					valuta = new Valuta();
 					//dodajKursGUI = new DodajKursGUI();
 					glavniProzor.setVisible(true);
 					glavniProzor.setLocationRelativeTo(null);
@@ -153,8 +154,8 @@ public class GUIKontroler {
 		try {
 			
 			GUIKontroler.menjacnica.obrisiValutu(valuta);
-
-			glavniProzor.osveziTabelu();
+			glavniProzor.prikaziSveValute();
+			
 			obrisiProzor.dispose();
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(glavniProzor, e1.getMessage(), "Greska",
